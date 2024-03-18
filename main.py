@@ -40,7 +40,7 @@ def war():
     winsP2 = 0
 
     cardsP1 = queque()
-    for i in range(2):
+    for i in range(3):
         if deckP1.isEmpty():
             return [-1, warCardsP1, warCardsP2]
         else:
@@ -49,7 +49,7 @@ def war():
             warCardsP1.enqueque(card)
 
     cardsP2 = queque()
-    for i in range(2):
+    for i in range(3):
         if deckP2.isEmpty():
             return [-1, warCardsP1, warCardsP2]
         else:
@@ -57,7 +57,7 @@ def war():
             cardsP2.enqueque(card)
             warCardsP2.enqueque(card)
 
-    for i in range(2):
+    for i in range(3):
         cardP1 = cardsP1.first()
         cardP2 = cardsP2.first()
 
@@ -81,10 +81,10 @@ def war():
             else:
                 winsP2 += 1
 
-            for i in range(warResult[1].get_size()-1):
+            for i in range(warResult[1].get_size()):
                 warCardsP1.enqueque(warResult[1].dequeque())
 
-            for i in range(warResult[2].get_size()-1):
+            for i in range(warResult[2].get_size()):
                 warCardsP2.enqueque(warResult[2].dequeque())
 
     if winsP1 > winsP2:
@@ -104,12 +104,16 @@ def getGameResult(deckP1, deckP2):
         cardP1 = deckP1.first()
         cardP2 = deckP2.first()
 
+        print(round)
+        print(deckP1)
+        print(deckP2)
+
         if cardP1 > cardP2:
             deckP1.enqueque(deckP1.dequeque())
             deckP1.enqueque(deckP2.dequeque())
         elif cardP1 < cardP2:
-            deckP2.enqueque(deckP2.dequeque())
             deckP2.enqueque(deckP1.dequeque())
+            deckP2.enqueque(deckP2.dequeque())
         else:
             warCards = queque()
             cardP1 = deckP1.dequeque()
@@ -128,7 +132,7 @@ def getGameResult(deckP1, deckP2):
             if warResult[0] == -1:
                 return ['PAT']
             else:
-                for i in range(warCards.get_size()-1):
+                for i in range(warCards.get_size()):
                     if warResult[0] == 1:
                         deckP1.enqueque(warCards.dequeque())
                     else:
