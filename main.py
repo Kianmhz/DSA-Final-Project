@@ -1,18 +1,15 @@
 import sys
 import math
-
-
-class queque():
-
+class queue():
     def __init__(self):
         self.arr = []
         self.size = 0
 
-    def enqueque(self, value):
+    def enqueue(self, value):
         self.arr.append(value)
         self.size += 1
 
-    def dequeque(self):
+    def dequeue(self):
         self.size -= 1
         return self.arr.pop(0)
 
@@ -28,128 +25,76 @@ class queque():
     def __str__(self):
         return str(self.arr)
 
-
 cardValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 
-
-def war():
-    warCardsP1 = queque()
-    warCardsP2 = queque()
-
-    winsP1 = 0
-    winsP2 = 0
-
-    cardsP1 = queque()
+def war(warCardsP1, warCardsP2):
     for i in range(3):
-        if deckP1.isEmpty():
-            return [-1, warCardsP1, warCardsP2]
+        if deckP1.isEmpty() or deckP2.isEmpty():
+            return -1
         else:
-            card = deckP1.dequeque()
-            cardsP1.enqueque(card)
-            warCardsP1.enqueque(card)
+            warCardsP1.enqueue(deckP1.dequeue())
+            warCardsP2.enqueue(deckP2.dequeue())
 
-    cardsP2 = queque()
-    for i in range(3):
-        if deckP2.isEmpty():
-            return [-1, warCardsP1, warCardsP2]
-        else:
-            card = deckP2.dequeque()
-            cardsP2.enqueque(card)
-            warCardsP2.enqueque(card)
+    battleCardP1 = deckP1.dequeue()
+    battleCardP2 = deckP2.dequeue()
 
-    for i in range(3):
-        cardP1 = cardsP1.first()
-        cardP2 = cardsP2.first()
+    warCardsP1.enqueue(battleCardP1)
+    warCardsP2.enqueue(battleCardP2)
 
-        if cardP1 > cardP2:
-            winsP1 += 1
-            cardsP1.dequeque()
-            cardsP2.dequeque()
-
-        elif cardP1 < cardP2:
-            winsP2 += 1
-            cardsP1.dequeque()
-            cardsP2.dequeque()
-
-        else:
-            warResult = war()
-
-            if warResult[0] == -1:
-                return [-1, warCardsP1, warCardsP2]
-            elif warResult[0] == 1:
-                winsP1 += 1
-            else:
-                winsP2 += 1
-
-            for i in range(warResult[1].get_size()):
-                warCardsP1.enqueque(warResult[1].dequeque())
-
-            for i in range(warResult[2].get_size()):
-                warCardsP2.enqueque(warResult[2].dequeque())
-
-    if winsP1 > winsP2:
-        return [1, warCardsP1, warCardsP2]
+    if battleCardP1 == battleCardP2:
+        return war(warCardsP1, warCardsP2)
     else:
-        return [2, warCardsP1, warCardsP2]
+        winnningDeck = deckP1 if battleCardP1 > battleCardP2 else deckP2
 
+        for i in range(warCardsP1.get_size()):
+            winnningDeck.enqueue(warCardsP1.dequeue())
+        for i in range(warCardsP2.get_size()):
+            winnningDeck.enqueue(warCardsP2.dequeue())
+        
+        return 1
 
 def getGameResult(deckP1, deckP2):
-    round = 0
+    rounds = 0
     while True:
-        if deckP1.isEmpty() and deckP2.isEmpty(): return ['PAT']
-        if deckP1.isEmpty(): return [2, round]
-        if deckP2.isEmpty(): return [1, round]
+        if deckP1.isEmpty() and deckP2.isEmpty():
+            return ["PAT"]
+        if deckP1.isEmpty():
+            return [2, rounds]
+        if deckP2.isEmpty():
+            return [1, rounds]
 
-        round += 1
-        cardP1 = deckP1.first()
-        cardP2 = deckP2.first()
+        rounds += 1
+        battleCardP1 = deckP1.dequeue()
+        battleCardP2 = deckP2.dequeue()
 
-        print(round)
-        print(deckP1)
-        print(deckP2)
+        if battleCardP1 == battleCardP2:
+            warCardsP1 = queue()
+            warCardsP1.enqueue(battleCardP1)
 
-        if cardP1 > cardP2:
-            deckP1.enqueque(deckP1.dequeque())
-            deckP1.enqueque(deckP2.dequeque())
-        elif cardP1 < cardP2:
-            deckP2.enqueque(deckP1.dequeque())
-            deckP2.enqueque(deckP2.dequeque())
+            warCardsP2 = queue()
+            warCardsP2.enqueue(battleCardP2)
+
+            result = war(warCardsP1, warCardsP2)
+
+            if result == -1:
+                return ["PAT"]
         else:
-            warCards = queque()
-            cardP1 = deckP1.dequeque()
-            cardP2 = deckP2.dequeque()
-
-            warResult = war()
-
-            warCards.enqueque(cardP1)
-            for i in range(warResult[1].get_size()):
-                warCards.enqueque(warResult[1].dequeque())
-            
-            warCards.enqueque(cardP2)
-            for i in range(warResult[2].get_size()):
-                warCards.enqueque(warResult[2].dequeque())
-
-            if warResult[0] == -1:
-                return ['PAT']
-            else:
-                for i in range(warCards.get_size()):
-                    if warResult[0] == 1:
-                        deckP1.enqueque(warCards.dequeque())
-                    else:
-                        deckP2.enqueque(warCards.dequeque())
+            winnningDeck = deckP1 if battleCardP1 > battleCardP2 else deckP2
+            winnningDeck.enqueue(battleCardP1)
+            winnningDeck.enqueue(battleCardP2)
 
 
-deckP1 = queque()
-deckP2 = queque()
+deckP1 = queue()
+deckP2 = queue()
 
 n = int(input())
 for i in range(n):
-    cardp_1 = input() 
-    deckP1.enqueque(cardValues.index(cardp_1[:len(cardp_1)-1]))
-m = int(input()) 
+    cardp_1 = input()
+    deckP1.enqueue(cardValues.index(cardp_1[:-1]))
+m = int(input())
 for i in range(m):
     cardp_2 = input()
-    deckP2.enqueque(cardValues.index(cardp_2[:len(cardp_2)-1]))
+    deckP2.enqueue(cardValues.index(cardp_2[:-1]))
 
 result = getGameResult(deckP1, deckP2)
 
