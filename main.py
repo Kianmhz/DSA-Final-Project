@@ -1,6 +1,4 @@
-import sys
-import math
-class queue():
+class Queue():
     def __init__(self):
         self.arr = []
         self.size = 0
@@ -43,15 +41,15 @@ def war(warCardsP1, warCardsP2):
 
     if battleCardP1 == battleCardP2:
         return war(warCardsP1, warCardsP2)
-    else:
-        winnningDeck = deckP1 if battleCardP1 > battleCardP2 else deckP2
+    
+    winnningDeck = deckP1 if battleCardP1 > battleCardP2 else deckP2
 
-        for i in range(warCardsP1.get_size()):
-            winnningDeck.enqueue(warCardsP1.dequeue())
-        for i in range(warCardsP2.get_size()):
-            winnningDeck.enqueue(warCardsP2.dequeue())
-        
-        return 1
+    for i in range(warCardsP1.get_size()):
+        winnningDeck.enqueue(warCardsP1.dequeue())
+    for i in range(warCardsP2.get_size()):
+        winnningDeck.enqueue(warCardsP2.dequeue())
+    
+    return 1
 
 def getGameResult(deckP1, deckP2):
     rounds = 0
@@ -68,10 +66,10 @@ def getGameResult(deckP1, deckP2):
         battleCardP2 = deckP2.dequeue()
 
         if battleCardP1 == battleCardP2:
-            warCardsP1 = queue()
+            warCardsP1 = Queue()
             warCardsP1.enqueue(battleCardP1)
 
-            warCardsP2 = queue()
+            warCardsP2 = Queue()
             warCardsP2.enqueue(battleCardP2)
 
             result = war(warCardsP1, warCardsP2)
@@ -84,8 +82,8 @@ def getGameResult(deckP1, deckP2):
             winnningDeck.enqueue(battleCardP2)
 
 
-deckP1 = queue()
-deckP2 = queue()
+deckP1 = Queue()
+deckP2 = Queue()
 
 n = int(input())
 for i in range(n):
