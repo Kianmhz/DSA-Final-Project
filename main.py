@@ -84,12 +84,16 @@ def getGameResult(deckP1, deckP2):
 
 deckP1 = Queue()
 deckP2 = Queue()
-
-n = int(input())
+n = -1
+while not (n > 0 and n < 1000):
+    n = int(input())
 for i in range(n):
     cardp_1 = input()
     deckP1.enqueue(cardValues.index(cardp_1[:-1]))
-m = int(input())
+
+m = -1
+while not (m > 0 and m < 1000):
+    m = int(input())
 for i in range(m):
     cardp_2 = input()
     deckP2.enqueue(cardValues.index(cardp_2[:-1]))
